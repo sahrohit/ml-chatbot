@@ -19,10 +19,11 @@ import {
 	Tooltip,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { FaRandom } from "react-icons/fa";
+import { FaGithub, FaRandom } from "react-icons/fa";
 import randomQuestion from "../components/helpers/RandomQuestion";
 import OpenGraphHead from "../components/shared/OpenGraphHead";
 import { motion, AnimatePresence } from "framer-motion";
+import FloatingIcon from "../components/FloatingIcon";
 
 const Home = () => {
 	const inputRef = useRef();
@@ -164,7 +165,6 @@ const Home = () => {
 			</Flex>
 			<AnimatePresence exitBeforeEnter={true} onExitComplete={() => null}>
 				<MotionBox
-					bg="grey.100"
 					position="fixed"
 					top={{ base: 10, lg: 5, xl: 20 }}
 					right={{ base: 10, lg: 5, xl: 20 }}
@@ -189,6 +189,38 @@ const Home = () => {
 					</Tooltip>
 				</MotionBox>
 			</AnimatePresence>
+			{/* <AnimatePresence>
+				<motion.div
+					initial="initial"
+					animate={["hidden", "bounce"]}
+					variants={scrollMoreVariants}
+				>
+					<Tooltip
+						offset={[10, 10]}
+						label="Check out Github Repo Here"
+						placement="top-start"
+						hasArrow
+						openDelay={1000}
+					>
+						<IconButton
+							fontSize="30px"
+							position="fixed"
+							bottom={{ base: 5, lg: 5, xl: 10 }}
+							right={{ base: 5, lg: 5, xl: 10 }}
+							variant="nooutline"
+							colorScheme="teal"
+							aria-label="Toggle Light Mode"
+							icon={<FaGithub />}
+						/>
+					</Tooltip>
+				</motion.div>
+			</AnimatePresence> */}
+			<FloatingIcon
+				icon={<FaGithub />}
+				position="fixed"
+				bottom={{ base: 5, lg: 5, xl: 10 }}
+				right={{ base: 5, lg: 5, xl: 10 }}
+			/>
 		</>
 	);
 };
