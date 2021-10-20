@@ -87,7 +87,9 @@ const Home = () => {
 							initialValues={{ name: "Hey" }}
 							onSubmit={(_values, actions) => {
 								handleSubmit();
-								actions.setSubmitting(false);
+								setTimeout(() => {
+									actions.setSubmitting(false);
+								}, 500);
 							}}
 						>
 							{(props) => (
@@ -97,7 +99,9 @@ const Home = () => {
 											<FormControl
 												isInvalid={form.errors.name && form.touched.name}
 											>
-												<FormLabel htmlFor="text">Message</FormLabel>
+												<FormLabel id="field-name-label" htmlFor="text">
+													Message
+												</FormLabel>
 												<Input
 													{...field}
 													id="text"
