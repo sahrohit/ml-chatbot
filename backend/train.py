@@ -47,7 +47,7 @@ hidden_size = 8
 output_size = len(tags)
 input_size = len(X_train[0])
 learning_rate = 0.001
-num_epochs = 10000
+num_epochs = 100
 
 
 class ChatDataset(Dataset):
@@ -91,23 +91,22 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-    if (epoch + 1) % 100 == 0:
-        print(f"Epoch {epoch+1}/{num_epochs}, loss={loss.item():.4f}")
-        if loss.item() < 0.01:
-            break
+    print(f"Epoch {epoch+1}/{num_epochs}, loss={loss.item():.4f}")
+    if loss.item() < 0.01:
+        break
 
-print(f"Final Loss, loss={loss.item():.4f}")
+    # print(f"Final Loss, loss={loss.item():.4f}")
 
-data = {
-    "model_state": model.state_dict(),
-    "input_size": input_size,
-    "hidden_size": hidden_size,
-    "output_size": output_size,
-    "all_words": all_words,
-    "tags": tags,
-}
+    data = {
+        "model_state": model.state_dict(),
+        "input_size": input_size,
+        "hidden_size": hidden_size,
+        "output_size": output_size,
+        "all_words": all_words,
+        "tags": tags,
+    }
 
-FILE = "data.pth"
-torch.save(data, FILE)
+    FILE = (f"backup/data_{loss.item():.4f}.pth")
+    torch.save(data, FILE)
 
-print(f"training complete. file saved to {FILE}")
+    print(f"training complete. file saved to {FILE}")
