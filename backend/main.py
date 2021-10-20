@@ -6,9 +6,10 @@ import torch
 from werkzeug.wrappers import response
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
+from flask_cors import CORS
 
 app = Flask("chat_bot")
-
+CORS(app)
 
 @app.route("/", methods=["GET"])
 def ping():
