@@ -2,14 +2,19 @@ from urllib import request
 from flask import Flask, request, jsonify
 import random
 import json
+from requests.models import Response
 import torch
 from werkzeug.wrappers import response
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
 from flask_cors import CORS
+import requests
+from os import environ
+import datetime
 
 app = Flask("chat_bot")
 CORS(app)
+
 
 @app.route("/", methods=["GET"])
 def ping():
@@ -55,11 +60,27 @@ def api():
     if prob.item() > 0.50:
         for intent in intents["intents"]:
             if tag == intent["tag"]:
-                result = random.choice(intent['responses'])
+                result = random.choice(intent["responses"])
     else:
         result = "I do not understand..."
 
-    response = {"answer": result}
+    response = {"answer": result, "probability": prob.item()}
+    database_data = {
+        "question": input_json["question"],
+        "response": result,
+        "probability": prob.item(),
+        "timestamp": datetime.datetime.now().timestamp(),
+        "ipAddress": request.remote_addr,
+    }
+
+    try:
+        requests.post(
+            environ.get("DATABASE_URL"),
+            data=json.dumps(database_data),
+        )
+    except:
+        print("Couldn't Write to the Database")
+
     return jsonify(response)
 
 
@@ -101,7 +122,7 @@ def chatnow(inputquestion):
     if prob.item() > 0.50:
         for intent in intents["intents"]:
             if tag == intent["tag"]:
-                result = random.choice(intent['responses'])
+                result = random.choice(intent["responses"])
     else:
         result = "I do not understand..."
 
