@@ -61,27 +61,40 @@ def api():
         for intent in intents["intents"]:
             if tag == intent["tag"]:
                 result = random.choice(intent["responses"])
+                isAnswered = True
+                probableAnswer = None
     else:
+        for intent in intents["intents"]:
+            if tag == intent["tag"]:
+                probableAnswer = random.choice(intent["responses"])
         result = "I do not understand..."
+        isAnswered = False
 
     if not request.headers.getlist("X-Forwarded-For"):
         ip = request.remote_addr
     else:
         ip = request.headers.getlist("X-Forwarded-For")[0]
-    
+
     try:
         geoDataResponse = requests.get(f"http://www.geoplugin.net/json.gp?ip={ip}")
-        geoData = (json.loads(geoDataResponse.text))
+        geoData = json.loads(geoDataResponse.text)
     except:
         print("Error getting Geo Data")
 
-    response = {"answer": result, "probability": prob.item()}
+    response = {
+        "answer": result,
+        "probableAnswer": probableAnswer,
+        "probability": prob.item(),
+        "isAnswered": isAnswered,
+    }
     database_data = {
         "question": input_json["question"],
         "response": result,
+        "probableAnswer": probableAnswer,
         "probability": prob.item(),
+        "isAnswered": isAnswered,
         "timestamp": datetime.datetime.now().timestamp(),
-        "ipAddress":ip,
+        "ipAddress": ip,
         "geoData": geoData,
     }
 
