@@ -64,13 +64,18 @@ def api():
     else:
         result = "I do not understand..."
 
+    if not request.headers.getlist("X-Forwarded-For"):
+        ip = request.remote_addr
+    else:
+        ip = request.headers.getlist("X-Forwarded-For")[0]
+
     response = {"answer": result, "probability": prob.item()}
     database_data = {
         "question": input_json["question"],
         "response": result,
         "probability": prob.item(),
         "timestamp": datetime.datetime.now().timestamp(),
-        "ipAddress": request.remote_addr,
+        "ipAddress": ip,
     }
 
     try:
