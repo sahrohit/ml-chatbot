@@ -16,10 +16,12 @@
     "axios": "^0.23.0",
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
+    "nanoid": "^3.1.30",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "react-table": "^7.7.0"
   },
   "devDependencies": {
     "eslint": "8.0.1",
