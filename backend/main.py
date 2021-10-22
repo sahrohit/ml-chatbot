@@ -68,6 +68,12 @@ def api():
         ip = request.remote_addr
     else:
         ip = request.headers.getlist("X-Forwarded-For")[0]
+    
+    try:
+        geoDataResponse = requests.get(f"http://www.geoplugin.net/json.gp?ip={ip}")
+        geoData = (json.loads(geoDataResponse.text))
+    except:
+        print("Error getting Geo Data")
 
     response = {"answer": result, "probability": prob.item()}
     database_data = {
@@ -75,7 +81,8 @@ def api():
         "response": result,
         "probability": prob.item(),
         "timestamp": datetime.datetime.now().timestamp(),
-        "ipAddress": ip,
+        "ipAddress":ip,
+        "geoData": geoData,
     }
 
     try:
