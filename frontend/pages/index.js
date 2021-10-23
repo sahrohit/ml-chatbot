@@ -17,6 +17,7 @@ import {
 	Icon,
 	InputRightElement,
 	Tooltip,
+	Stack,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { FaGithub, FaRandom } from "react-icons/fa";
@@ -24,9 +25,13 @@ import randomQuestion from "../components/helpers/RandomQuestion";
 import OpenGraphHead from "../components/shared/OpenGraphHead";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatingIcon from "../components/FloatingIcon";
+import { FaArchive } from "react-icons/fa";
+import { IoIosStats } from "react-icons/io";
+import { useRouter } from "next/router";
 
 const Home = () => {
 	const inputRef = useRef();
+	const router = useRouter();
 
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [response, setResponse] = useState();
@@ -189,32 +194,53 @@ const Home = () => {
 					</Tooltip>
 				</MotionBox>
 			</AnimatePresence>
-			{/* <AnimatePresence>
-				<motion.div
-					initial="initial"
-					animate={["hidden", "bounce"]}
-					variants={scrollMoreVariants}
+			<AnimatePresence exitBeforeEnter={true} onExitComplete={() => null}>
+				<Stack
+					direction="row"
+					position="fixed"
+					top={{ base: 10, lg: 5, xl: 20 }}
+					left={{ base: 10, lg: 5, xl: 20 }}
 				>
-					<Tooltip
-						offset={[10, 10]}
-						label="Check out Github Repo Here"
-						placement="top-start"
-						hasArrow
-						openDelay={1000}
+					<MotionBox
+						drag
+						dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+						dragElastic={0.2}
+						dragTransition={{ bounceStiffness: 1000, bounceDamping: 10 }}
 					>
-						<IconButton
-							fontSize="30px"
-							position="fixed"
-							bottom={{ base: 5, lg: 5, xl: 10 }}
-							right={{ base: 5, lg: 5, xl: 10 }}
-							variant="nooutline"
-							colorScheme="teal"
-							aria-label="Toggle Light Mode"
-							icon={<FaGithub />}
-						/>
-					</Tooltip>
-				</motion.div>
-			</AnimatePresence> */}
+						<Tooltip label="Archive" closeOnClick={false} placement="top">
+							<IconButton
+								fontSize="2xl"
+								variant="nooutline"
+								colorScheme="teal"
+								aria-label="Toggle Light Mode"
+								icon={<FaArchive />}
+								onClick={() => {
+									router.push("/logs");
+								}}
+							/>
+						</Tooltip>
+					</MotionBox>
+					<MotionBox
+						drag
+						dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+						dragElastic={0.2}
+						dragTransition={{ bounceStiffness: 1000, bounceDamping: 10 }}
+					>
+						<Tooltip label="Stats" closeOnClick={false} placement="top">
+							<IconButton
+								fontSize="2xl"
+								variant="nooutline"
+								colorScheme="teal"
+								aria-label="Toggle Light Mode"
+								icon={<IoIosStats />}
+								onClick={() => {
+									router.push("/stats");
+								}}
+							/>
+						</Tooltip>
+					</MotionBox>
+				</Stack>
+			</AnimatePresence>
 			<FloatingIcon
 				icon={<FaGithub />}
 				position="fixed"

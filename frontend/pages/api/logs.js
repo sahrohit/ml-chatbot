@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function handler(req, res) {
+const handler = (req, res) => {
 	axios
 		.get(process.env.NEXT_PUBLIC_DATABASE_URL)
 		.then((response) => {
@@ -9,4 +9,6 @@ export default function handler(req, res) {
 		.catch((error) => {
 			res.status(404).json({ message: error });
 		});
-}
+};
+
+export default handler;
