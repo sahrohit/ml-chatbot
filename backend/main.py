@@ -67,7 +67,7 @@ def api():
         for intent in intents["intents"]:
             if tag == intent["tag"]:
                 probableAnswer = random.choice(intent["responses"])
-        result = "I do not understand..."
+        result = "I have no idea..."
         isAnswered = False
 
     if not request.headers.getlist("X-Forwarded-For"):
@@ -149,7 +149,7 @@ def chatnow(inputquestion):
             if tag == intent["tag"]:
                 result = random.choice(intent["responses"])
     else:
-        result = "I do not understand..."
+        result = "I have no idea..."
 
     response = {"answer": result}
     return jsonify(response)
