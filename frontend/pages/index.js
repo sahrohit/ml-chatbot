@@ -18,6 +18,7 @@ import {
 	InputRightElement,
 	Tooltip,
 	Stack,
+	useToast,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { FaGithub, FaRandom } from "react-icons/fa";
@@ -32,24 +33,30 @@ import { useRouter } from "next/router";
 const Home = () => {
 	const inputRef = useRef();
 	const router = useRouter();
+	const toast = useToast();
 
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [response, setResponse] = useState();
+	const [loading, setLoading] = useState(false);
+
+	const [messageAcknowledged, setMessageAcknowledged] = useState(false);
 
 	const MotionBox = motion(Box);
 
 	const handleSubmit = async () => {
+		setLoading(true);
 		axios
 			.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chat`, {
 				question: inputRef.current.value,
 			})
 			.then(function (response) {
 				setResponse(response.data.answer);
-				console.log(response.data.answer);
+				setLoading(false);
+				toast.closeAll();
 			})
 			.catch(function (error) {
-				console.log(error);
 				setResponse(error);
+				setLoading(false);
 			});
 	};
 
@@ -94,6 +101,19 @@ const Home = () => {
 								message: "",
 							}}
 							onSubmit={(_values, actions) => {
+								if (!messageAcknowledged) {
+									toast({
+										title: "It might take a while.",
+										position: "top",
+										variant: "subtle",
+										description: "We're spinning servers just for you.",
+										status: "info",
+										duration: 9000,
+										isClosable: true,
+									});
+									setMessageAcknowledged(true);
+								}
+
 								handleSubmit();
 								setTimeout(() => {
 									actions.setSubmitting(false);
@@ -149,7 +169,7 @@ const Home = () => {
 									<Button
 										mt={4}
 										colorScheme="teal"
-										isLoading={props.isSubmitting}
+										isLoading={props.isSubmitting || loading}
 										disabled={props.isSubmitting}
 										type="submit"
 									>

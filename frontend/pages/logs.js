@@ -20,8 +20,6 @@ const LogPage = ({ data }) => {
 export default LogPage;
 
 export const getServerSideProps = async (req, res) => {
-	console.log(req);
-
 	return axios
 		.get(process.env.NEXT_PUBLIC_DATABASE_URL)
 		.then((response) => {
