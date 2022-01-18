@@ -29,6 +29,8 @@ import FloatingIcon from "../components/FloatingIcon";
 import { FaArchive } from "react-icons/fa";
 import { IoIosStats } from "react-icons/io";
 import { useRouter } from "next/router";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
+import { AiFillApi } from "react-icons/ai";
 
 const Home = () => {
 	const inputRef = useRef();
@@ -256,6 +258,44 @@ const Home = () => {
 								onClick={() => {
 									router.push("/stats");
 								}}
+							/>
+						</Tooltip>
+					</MotionBox>
+					<MotionBox
+						drag
+						dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+						dragElastic={0.2}
+						dragTransition={{ bounceStiffness: 1000, bounceDamping: 10 }}
+					>
+						<Tooltip label="API" closeOnClick={false} placement="top">
+							<IconButton
+								as="a"
+								cursor="pointer"
+								fontSize="2xl"
+								variant="nooutline"
+								colorScheme="teal"
+								aria-label="Toggle Light Mode"
+								icon={<AiFillApi />}
+								href="/api/logs"
+							/>
+						</Tooltip>
+					</MotionBox>
+					<MotionBox
+						drag
+						dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+						dragElastic={0.2}
+						dragTransition={{ bounceStiffness: 1000, bounceDamping: 10 }}
+					>
+						<Tooltip label="Report" closeOnClick={false} placement="top">
+							<IconButton
+								as="a"
+								cursor="pointer"
+								fontSize="2xl"
+								variant="nooutline"
+								colorScheme="teal"
+								aria-label="Toggle Light Mode"
+								icon={<BsFileEarmarkPdfFill />}
+								href="/Report.pdf"
 							/>
 						</Tooltip>
 					</MotionBox>
